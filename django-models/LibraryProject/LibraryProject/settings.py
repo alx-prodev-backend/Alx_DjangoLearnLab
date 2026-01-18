@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'bookshelf',
     'relationship_app',
 ]
+LOGIN_REDIRECT_URL = 'books_list'
+LOGOUT_REDIRECT_URL = 'login'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
