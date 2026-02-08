@@ -1,10 +1,3 @@
-from django.shortcuts import render
-from rest_framework.viewsets import ModelViewSet
-from .models import   Book
-from .serializers import  BookSerializer
-
-# Create your views here.
-# starter way
 from rest_framework.generics import (
     ListAPIView,
     RetrieveAPIView,
@@ -16,50 +9,26 @@ from .models import Book
 from .serializers import BookSerializer
 
 
-class ListView(ListAPIView):
-    """
-    Retrieve all books.
-    """
+class BookListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
 
-class DetailView(RetrieveAPIView):
-    """
-    Retrieve a single book by ID.
-    """
+class BookDetailView(RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
 
-class CreateView(CreateAPIView):
-    """
-    Create a new book.
-    """
+class BookCreateView(CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
 
-class UpdateView(UpdateAPIView):
-    """
-    Update an existing book.
-    """
+class BookUpdateView(UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
 
-class DeleteView(DestroyAPIView):
-    """
-    Delete a book.
-    """
+class BookDeleteView(DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-
-# ِAdvanced way
-class BookViewSet(ModelViewSet):
-    """
-    ViewSet for handling CRUD operations on  Book model.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
