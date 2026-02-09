@@ -87,3 +87,23 @@ class BookAPITestCase(APITestCase):
         self.assertEqual(response.data[0]['publication_year'], 2021)
 
 
+from django.contrib.auth.models import User
+
+
+def setUp(self):
+    self.user = User.objects.create_user(username="testuser", password="12345")
+
+    self.client.login(username="testuser", password="12345")
+
+    self.author = Author.objects.create(name="John Doe")
+    self.book1 = Book.objects.create(title="Python Basics", publication_year=2020, author=self.author)
+    self.book2 = Book.objects.create(title="Advanced Django", publication_year=2021, author=self.author)
+
+    # URLs
+    self.list_url = reverse('book-list')
+    self.detail_url = lambda pk: reverse('book-detail', args=[pk])
+    self.create_url = reverse('book-create')
+    self.update_url = lambda pk: reverse('book-update', args=[pk])
+    self.delete_url = lambda pk: reverse('book-delete', args=[pk])
+
+
