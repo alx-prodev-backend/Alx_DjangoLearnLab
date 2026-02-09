@@ -7,32 +7,29 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
-from .models import Book
-from .serializers import BookSerializer
-from rest_framework import filters
+
 from django_filters.rest_framework import DjangoFilterBackend
 
+from django_filters import rest_framework
+from rest_framework import generics, filters
+from .models import Book
+from .serializers import BookSerializer
 
 
-class BookListView(ListAPIView):
+
+class BookListView(generics.ListAPIView):
     """
     Retrieve all books with filtering, searching, and ordering capabilities.
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    # ===== Advanced DRF features =====
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-
-    # Fields to filter by
-    filterset_fields = ['title', 'author__name', 'publication_year']  # author__name for FK
-
-    # Fields to search by
+    filter_backends = [rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['title', 'author__name', 'publication_year']
     search_fields = ['title', 'author__name']
-
-    # Fields allowed for ordering
     ordering_fields = ['title', 'publication_year']
-    ordering = ['title']  # default ordering
+    ordering = ['title']
+
 
 
 class BookCreateView(CreateAPIView):
