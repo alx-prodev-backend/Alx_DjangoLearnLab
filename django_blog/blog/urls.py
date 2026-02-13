@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views # 👈 Important import
 from . import views
 from .views import (
     PostListView, 
@@ -24,8 +25,13 @@ urlpatterns = [
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
 
-    # --- THE MISSING LINKS ---
-    path('profile/', views.profile, name='profile'), # 👈 This name MUST match 'profile' in your template
+    # Authentication & Navigation URLs
+    path('register/', views.register, name='register'),
+    path('login/', auth_views.LoginView.as_view(template_name='blog/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='blog/logout.html'), name='logout'), # 👈 This fixes the error
+    path('profile/', views.profile, name='profile'),
+    
+    # Search & Tags
     path('search/', PostListView.as_view(), name='search'),
     path('tags/<slug:tag_slug>/', PostListView.as_view(), name='post-by-tag'),
 ]
