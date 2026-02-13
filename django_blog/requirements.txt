@@ -16,3 +16,6 @@ django-filter==25.2
 
 django-crispy-forms
 crispy-bootstrap5
+
+django-taggit
+

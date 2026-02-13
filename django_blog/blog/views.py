@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
+from django.db.models import Q
+from taggit.models import Tag
 from django.views.generic import (
     ListView,
     DetailView,
@@ -46,6 +48,27 @@ class PostListView(ListView):
     template_name = 'blog/home.html'
     context_object_name = 'posts'
     ordering = ['-published_date']
+    paginate_by = 5
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('q')
+        tag_slug = self.kwargs.get('tag_slug')
+
+        # Logic for Search functionality
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(tags__name__icontains=query)
+            ).distinct()
+
+        # Logic for Tag filtering
+        if tag_slug:
+            tag = get_object_or_404(Tag, slug=tag_slug)
+            queryset = queryset.filter(tags__in=[tag])
+
+        return queryset
 
 class PostDetailView(DetailView):
     model = Post
@@ -58,11 +81,12 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'tags']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
