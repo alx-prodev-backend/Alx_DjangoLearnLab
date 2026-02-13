@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # Third Party Apps
     'crispy_forms',            
     'crispy_bootstrap5',
+    'taggit'
 ]
 
 # Crispy Forms Configuration
