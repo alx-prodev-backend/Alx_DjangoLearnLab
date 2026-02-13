@@ -18,4 +18,4 @@ class Post(models.Model):
 
 # this tells Django where to go after a post is created
 def get_absolute_url(self):
-    return reverse('post-details', kwargs={'pk': self.pk})
+        return reverse('post-detail', kwargs={'pk': self.pk})
