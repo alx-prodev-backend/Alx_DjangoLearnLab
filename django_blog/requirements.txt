@@ -13,3 +13,6 @@ Pygments==2.19.2
 # Optional (Keep only if you use them in code)
 djangorestframework==3.16.1
 django-filter==25.2
+
+django-crispy-forms
+crispy-bootstrap5
