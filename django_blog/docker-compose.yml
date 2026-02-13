@@ -29,7 +29,7 @@ services:
       # Hot-Reloading: Sync local changes to container immediately
       - .:/app
     ports:
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
       # Ensure database starts before the web app
       - db
