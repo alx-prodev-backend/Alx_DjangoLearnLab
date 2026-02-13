@@ -29,4 +29,6 @@ urlpatterns = [
     
     # URL for deleting a comment: /comment/<pk>/delete/
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
+    path('search/', PostListView.as_view(), name='search'),
+    path('tags/<slug:tag_slug>/', PostListView.as_view(), name='post-by-tag'),
 ]
