@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'rest_framework',
+    'blog.apps.BlogConfig',
+    'crispy_forms',            
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
