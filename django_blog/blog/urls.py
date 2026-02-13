@@ -1,29 +1,32 @@
-# blog/urls.py
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from . import views
 from .views import (
-    PostListView,
-    PostDetailView,
-    PostCreateView,
-    PostUpdateView,
-    PostDeleteView
+    PostListView, 
+    PostDetailView, 
+    PostCreateView, 
+    PostUpdateView, 
+    PostDeleteView,
+    CommentCreateView,
+    CommentUpdateView,
+    CommentDeleteView
 )
 
 urlpatterns = [
-    # 1. THE HOME PAGE (Blog Feed)
-    # This must come FIRST and point to PostListView
-    path('', PostListView.as_view(), name='blog-home'), 
-
-    # 2. BLOG POST MANAGEMENT (CRUD)
-    path('post/new/', PostCreateView.as_view(), name='post-create'),
+    # Post URLs
+    path('', PostListView.as_view(), name='blog-home'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+    path('post/new/', PostCreateView.as_view(), name='post-create'),
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
 
-    # 3. AUTHENTICATION & PROFILE
-    path('register/', views.register, name='register'),
-    path('profile/', views.profile, name='profile'),
-    path('login/', auth_views.LoginView.as_view(template_name='blog/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='blog/logout.html'), name='logout'),
+    # --- Mandatory Comment URLs (Matching Step 5 requirements) ---
+    
+    # URL for creating a comment: /post/<pk>/comments/new/
+    path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='add-comment'),
+    
+    # URL for updating a comment: /comment/<pk>/update/
+    path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
+    
+    # URL for deleting a comment: /comment/<pk>/delete/
+    path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
 ]
