@@ -4,7 +4,8 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    # ...  (home, etc) ...
+    # Add this line to fix the NoReverseMatch error
+    path('', views.register, name='blog-home'), 
 
     # Authentication URLs
     path('register/', views.register, name='register'),
