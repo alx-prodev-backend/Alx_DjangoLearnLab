@@ -1,0 +1,20 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <h2 class="mb-4 font-weight-bold">Latest Stories</h2>
+    {% for post in posts %}
+        <article class="content-section">
+            <div class="d-flex align-items-center mb-3">
+                <img class="rounded-circle border mr-2" src="{{ post.author.profile.image.url }}" style="width: 45px; height: 45px;">
+                <div class="ml-2">
+                    <a class="font-weight-bold" href="#">{{ post.author }}</a>
+                    <small class="text-muted d-block">{{ post.date_posted|date:"F d, Y" }}</small>
+                </div>
+            </div>
+            <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+            <p class="article-content text-secondary">{{ post.content|truncatewords:30 }}</p>
+            <div class="mt-3">
+                <a href="{% url 'post-detail' post.id %}" class="btn btn-sm btn-outline-info">Read More</a>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
