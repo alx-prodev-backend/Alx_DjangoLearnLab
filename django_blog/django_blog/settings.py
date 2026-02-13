@@ -130,5 +130,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'blog-home'  # page redirection after login
-LOGIN_URL = 'login'              # Login page if any one tried to enter a protected page
+# django_blog/settings.py
+LOGIN_REDIRECT_URL = 'blog-home'
+LOGIN_URL = 'login'
