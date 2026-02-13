@@ -19,16 +19,13 @@ urlpatterns = [
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
 
-    # --- Mandatory Comment URLs (Matching Step 5 requirements) ---
-    
-    # URL for creating a comment: /post/<pk>/comments/new/
+    # Comment URLs
     path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='add-comment'),
-    
-    # URL for updating a comment: /comment/<pk>/update/
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
-    
-    # URL for deleting a comment: /comment/<pk>/delete/
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
+
+    # --- THE MISSING LINKS ---
+    path('profile/', views.profile, name='profile'), # 👈 This name MUST match 'profile' in your template
     path('search/', PostListView.as_view(), name='search'),
     path('tags/<slug:tag_slug>/', PostListView.as_view(), name='post-by-tag'),
 ]
