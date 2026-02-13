@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Comment, Post # Import Post model
-from taggit.forms import TagWidget # Mandatory import for the check
+from .models import Comment, Post
+from taggit.forms import TagWidget # 👈 Mandatory import for the check
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField()
@@ -18,7 +18,7 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['username', 'email']
 
-# --- NEW: Post Form with Tagging (Mandatory for Step 2) ---
+# --- MANDATORY: PostForm with TagWidget ---
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
@@ -30,7 +30,6 @@ class PostForm(forms.ModelForm):
             }),
         }
 
-# --- Comment Form Implementation ---
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
