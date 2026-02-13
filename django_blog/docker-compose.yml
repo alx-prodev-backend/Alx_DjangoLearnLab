@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # --- Service 1: Database (MySQL) ---
+  db:
+    image: mysql:8.0
+    container_name: django_db_container
+    restart: always
+    environment:
+      MYSQL_DATABASE: django_blog_db
+      MYSQL_ROOT_PASSWORD: password  # Must match the password in settings.py
+    ports:
+      # Map container port 3306 to host port 3307 to avoid conflicts with local MySQL
+      - "3307:3306"
+    volumes:
+      # Persist database data even if container is removed
+      - mysql_data:/var/lib/mysql
+
+  # --- Service 2: Django App ---
+  web:
+    build: .
+    container_name: django_app_container
+    # Command to run migrations automatically before starting the server
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      # Hot-Reloading: Sync local changes to container immediately
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      # Ensure database starts before the web app
+      - db
+    environment:
+      # Environment variables to override settings.py
+      - DB_NAME=django_blog_db
+      - DB_USER=root
+      - DB_PASS=password
+      - DB_HOST=db  # This refers to the service name 'db' defined above
+      - DB_PORT=3306
+
+volumes:
+  mysql_data:

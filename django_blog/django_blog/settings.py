@@ -9,13 +9,24 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+import os
 
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'blog/static'),
+]
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -76,15 +87,14 @@ WSGI_APPLICATION = 'django_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.mysql',  # أو 'django.db.backends.postgresql'
-        'NAME': 'django_blog_db',
-        'USER': 'root',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '3306',
-
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME', 'django_blog_db'),
+        'USER': os.environ.get('DB_USER', 'root'),
+        'PASSWORD': os.environ.get('DB_PASS', 'password'),
+        # Logic: Inside Docker, host is the service name 'db'.
+        # Locally, it defaults to 'localhost'.
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '3306'),
     }
 }
 
@@ -129,3 +139,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'blog-home'  # page redirection after login
+LOGIN_URL = 'login'              # Login page if any one tried to enter a protected page
